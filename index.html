@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetGuard - Gestor de Bankroll</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="user-welcome">Bem-vindo, Senhor</span>
+            <h1>Bankroll Monitor</h1>
+        </header>
+
+        <section class="summary">
+            <div class="card">
+                <h3>Saldo Geral</h3>
+                <div class="balance-value" id="total-balance">R$ 0,00</div>
+            </div>
+            <div class="card">
+                <h3>Depósitos</h3>
+                <div class="balance-value white" id="total-deposits">R$ 0,00</div>
+            </div>
+        </section>
+
+        <div class="card">
+            <h3>Últimas Movimentações</h3>
+            <div id="transaction-list">
+                </div>
+        </div>
+    </div>
+
+    <div id="modalPlataformas" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Vincular Aposta</h2>
+            <input type="text" id="inputBusca" class="search-input" placeholder="Pesquisar ou nova casa...">
+            <div id="listaPlataformas" class="platform-list"></div>
+            <button id="btnManual" class="btn-add-manual">Registrar Novo Nome</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

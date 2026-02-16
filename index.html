@@ -16,8 +16,12 @@
             <h1>Bankroll Monitor <span class="ai-badge">AI INSIGHTS</span></h1>
         </header>
 
-        <section id="ai-alerts" class="ai-alerts-section">
-            </section>
+        <section id="ai-alerts" class="ai-alerts-section"></section>
+
+        <div class="action-buttons">
+            <button id="btnDeposito" class="btn-action btn-dep">📥 Depósito</button>
+            <button id="btnRetirada" class="btn-action btn-ret">📤 Retirada</button>
+        </div>
 
         <section class="summary">
             <div class="card">
@@ -25,13 +29,13 @@
                 <div class="balance-value" id="total-balance">R$ 0,00</div>
             </div>
             <div class="card">
-                <h3>Depósitos (Mês)</h3>
+                <h3>Total Depósitos</h3>
                 <div class="balance-value white" id="total-deposits">R$ 0,00</div>
             </div>
         </section>
 
         <div class="card ai-card">
-            <h3><span class="icon">🤖</span> Consultor de Gestão</h3>
+            <h3>🤖 Consultor de Gestão</h3>
             <p id="ai-advice">Aguardando dados para análise...</p>
         </div>
 
@@ -41,14 +45,15 @@
         </div>
     </div>
 
-    <button id="btnNovoRegistro" class="fab">+</button>
-
     <div id="modalPlataformas" class="modal-overlay">
         <div class="modal-content">
-            <h2>Vincular Plataforma</h2>
-            <input type="text" id="inputBusca" class="search-input" placeholder="Buscar ou nova casa...">
+            <h2 id="modalTitle">Vincular Plataforma</h2>
+            <div class="input-group">
+                <input type="text" id="inputBusca" class="search-input" placeholder="Nome da plataforma...">
+                <button id="btnConfirmarNovo" class="btn-confirm-add">OK</button>
+            </div>
             <div id="listaPlataformas" class="platform-list"></div>
-            <button id="btnManual" class="btn-add-manual">Confirmar Novo Nome</button>
+            <button onclick="fecharModal()" class="btn-cancel">Cancelar</button>
         </div>
     </div>
 

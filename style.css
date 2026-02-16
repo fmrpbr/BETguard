@@ -1,51 +1,19 @@
-:root {
-    --bg-color: #0a0a0b;
-    --card-bg: #161618;
-    --text-main: #ffffff;
-    --text-dim: #8e8e93;
-    --accent-green: #32d74b;
-    --accent-red: #ff453a;
-    --ai-purple: #bf5af2;
+/* ... manter estilos anteriores e adicionar estes ... */
+.action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+.btn-action { 
+    padding: 18px; border: none; border-radius: 12px; font-weight: bold; font-size: 1rem; color: #000; cursor: pointer;
 }
+.btn-dep { background: var(--accent-green); }
+.btn-ret { background: #ffffff; }
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: -apple-system, system-ui, sans-serif;
-    margin: 0; padding: 15px;
+.input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+.btn-confirm-add { 
+    background: var(--accent-green); border: none; padding: 0 20px; border-radius: 10px; font-weight: bold;
 }
-
-.time-display { color: var(--text-dim); font-size: 0.8rem; font-family: monospace; }
-.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-
-.ai-badge { font-size: 0.5rem; background: var(--ai-purple); padding: 2px 6px; border-radius: 4px; vertical-align: middle; }
-
-.card { background: var(--card-bg); border-radius: 18px; padding: 20px; margin-bottom: 15px; border: 1px solid #2c2c2e; }
-
-.ai-card { border-left: 4px solid var(--ai-purple); }
-#ai-advice { font-size: 0.9rem; line-height: 1.4; color: #d1d1d6; }
-
-.ai-alerts-section { margin-bottom: 15px; }
-.alert-box { 
-    padding: 12px; border-radius: 10px; font-size: 0.85rem; font-weight: 500; margin-bottom: 8px;
-    animation: slideIn 0.3s ease-out;
+.btn-cancel { 
+    width: 100%; padding: 12px; background: transparent; color: var(--text-dim); border: none; margin-top: 10px;
 }
-.alert-warning { background: rgba(255, 69, 58, 0.15); color: var(--accent-red); border: 1px solid var(--accent-red); }
-
-.summary { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.balance-value { font-size: 1.4rem; font-weight: bold; margin-top: 5px; }
-
-.fab {
-    position: fixed; bottom: 30px; right: 30px; width: 64px; height: 64px;
-    background: var(--accent-green); border: none; border-radius: 50%;
-    font-size: 30px; box-shadow: 0 8px 25px rgba(50, 215, 75, 0.3);
+.platform-list:empty::before {
+    content: "Nenhuma plataforma salva. Digite o nome acima para cadastrar.";
+    display: block; padding: 20px; color: var(--text-dim); text-align: center; font-size: 0.8rem;
 }
-
-.modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.95); display: none; align-items: flex-end; z-index: 1000;
-}
-
-.modal-content { background: #1c1c1e; width: 100%; padding: 25px; border-radius: 25px 25px 0 0; }
-
-@keyframes slideIn { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }

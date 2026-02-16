@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BetGuard - Gestor de Bankroll</title>
+    <title>BetGuard AI - Gestão de Bankroll</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <span class="user-welcome">Bem-vindo, Senhor</span>
-            <h1>Bankroll Monitor</h1>
+            <div class="header-top">
+                <span class="user-welcome">Bem-vindo, Senhor</span>
+                <span id="current-time" class="time-display">00/00/0000 00:00:00</span>
+            </div>
+            <h1>Bankroll Monitor <span class="ai-badge">AI INSIGHTS</span></h1>
         </header>
+
+        <section id="ai-alerts" class="ai-alerts-section">
+            </section>
 
         <section class="summary">
             <div class="card">
@@ -20,24 +25,30 @@
                 <div class="balance-value" id="total-balance">R$ 0,00</div>
             </div>
             <div class="card">
-                <h3>Depósitos</h3>
+                <h3>Depósitos (Mês)</h3>
                 <div class="balance-value white" id="total-deposits">R$ 0,00</div>
             </div>
         </section>
 
+        <div class="card ai-card">
+            <h3><span class="icon">🤖</span> Consultor de Gestão</h3>
+            <p id="ai-advice">Aguardando dados para análise...</p>
+        </div>
+
         <div class="card">
             <h3>Últimas Movimentações</h3>
-            <div id="transaction-list">
-                </div>
+            <div id="transaction-list"></div>
         </div>
     </div>
 
+    <button id="btnNovoRegistro" class="fab">+</button>
+
     <div id="modalPlataformas" class="modal-overlay">
         <div class="modal-content">
-            <h2>Vincular Aposta</h2>
-            <input type="text" id="inputBusca" class="search-input" placeholder="Pesquisar ou nova casa...">
+            <h2>Vincular Plataforma</h2>
+            <input type="text" id="inputBusca" class="search-input" placeholder="Buscar ou nova casa...">
             <div id="listaPlataformas" class="platform-list"></div>
-            <button id="btnManual" class="btn-add-manual">Registrar Novo Nome</button>
+            <button id="btnManual" class="btn-add-manual">Confirmar Novo Nome</button>
         </div>
     </div>
 

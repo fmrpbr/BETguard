@@ -1,7 +1,7 @@
-// Dados iniciais
+o// Dados iniciais
 let transacaoPendente = null;
 let plataformas = JSON.parse(localStorage.getItem('plataformas_ranking')) || [
-    { nome: "Bet365", usos: 0 }, { nome: "Betano", usos: 0 }, { nome: "Blaze", usos: 0 }
+    { nome: "BacanaPlay", usos: 0 }, { nome: "Betano", usos: 0 }, { nome: "Betao", usos: 0 }, { nome: "sorte na bet", usos: 0 },{ nome: "8Casinos", usos: 0 }
 ];
 
 // 1. Relógio em Tempo Real

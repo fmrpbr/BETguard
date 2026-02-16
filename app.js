@@ -117,3 +117,16 @@ function renderizarLista() {
 }
 
 document.addEventListener('DOMContentLoaded', atualizarTudo);
+// Ativa o botão de cadastro manual no Modal
+document.getElementById('btnManual').onclick = () => {
+    const input = document.getElementById('inputBusca');
+    const novoNome = input.value.trim();
+
+    if (novoNome) {
+        // Se o nome não estiver vazio, finaliza o registro com este novo nome
+        finalizarRegistro(novoNome);
+        input.value = ""; // Limpa o campo para a próxima vez
+    } else {
+        alert("Por favor, digite o nome da casa de apostas.");
+    }
+};

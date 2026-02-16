@@ -1,57 +1,49 @@
-// Configuração Inicial e LocalStorage
+// Dados iniciais
 let transacaoPendente = null;
-
 let plataformas = JSON.parse(localStorage.getItem('plataformas_ranking')) || [
-    { nome: "Bet365", usos: 0 }, { nome: "Betano", usos: 0 },
-    { nome: "Blaze", usos: 0 }, { nome: "EstrelaBet", usos: 0 }
+    { nome: "Bet365", usos: 0 }, { nome: "Betano", usos: 0 }, { nome: "Blaze", usos: 0 }
 ];
 
-// Inicialização do App
-document.addEventListener('DOMContentLoaded', () => {
-    atualizarDashboard();
-    renderizarHistorico();
-    
-    // Listener de Busca no Modal
-    document.getElementById('inputBusca').addEventListener('input', (e) => renderizarListaPlataformas(e.target.value));
-    
-    // Clique fora do modal para fechar
-    document.getElementById('modalPlataformas').onclick = (e) => {
-        if(e.target.id === 'modalPlataformas') fecharModal();
+// 1. Relógio em Tempo Real
+function updateClock() {
+    const now = new Date();
+    document.getElementById('current-time').innerText = now.toLocaleString('pt-BR');
+}
+setInterval(updateClock, 1000);
+
+// 2. IA de Gestão e Alertas
+function executarIA(historico, saldo) {
+    const aiAdvice = document.getElementById('ai-advice');
+    const alertBox = document.getElementById('ai-alerts');
+    alertBox.innerHTML = ""; // Limpa alertas anteriores
+
+    if (historico.length === 0) {
+        aiAdvice.innerText = "Senhor, inicie os registros para que eu possa analisar seu perfil de risco.";
+        return;
     }
-});
 
-// Lógica de Captura (Simulada para Capacitor/Cordova)
-window.addEventListener("notificationReceived", function(e) {
-    const texto = e.text; // "Pix enviado de R$ 50,00"
-    const valorRegex = /R\$\s?(\d+,\d{2})/;
-    const match = texto.match(valorRegex);
+    // Lógica de Análise
+    const depósitos = historico.filter(t => t.tipo === "DEPÓSITO");
+    const ultimosDepósitos = depósitos.slice(0, 3);
+    const mediaDepósito = depósitos.reduce((a, b) => a + b.valor, 0) / depósitos.length;
 
-    if (match) {
-        transacaoPendente = {
-            valor: parseFloat(match[1].replace(',', '.')),
-            tipo: texto.toLowerCase().includes('recebido') ? 'SAQUE' : 'DEPÓSITO',
-            data: new Date().toISOString()
-        };
-        abrirModal();
+    // Alerta de Risco: Muitos depósitos seguidos
+    if (ultimosDepósitos.length >= 3) {
+        const alerta = document.createElement('div');
+        alerta.className = "alert-box alert-warning";
+        alerta.innerText = "⚠️ ALERTA: 3 depósitos seguidos detectados. Avalie sua estratégia.";
+        alertBox.appendChild(alerta);
     }
-});
 
-function renderizarListaPlataformas(filtro = "") {
-    const container = document.getElementById('listaPlataformas');
-    container.innerHTML = "";
-    
-    const ordenadas = plataformas.sort((a, b) => b.usos - a.usos);
-    const filtradas = ordenadas.filter(p => p.nome.toLowerCase().includes(filtro.toLowerCase()));
-
-    filtradas.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'platform-item';
-        div.innerHTML = `<span>${p.nome}</span> <small style="color:#666">${p.usos} usos</small>`;
-        div.onclick = () => finalizarRegistro(p.nome);
-        container.appendChild(div);
-    });
+    // Conselho da IA
+    if (saldo < 0) {
+        aiAdvice.innerText = `Análise: O Senhor está com déficit de R$ ${Math.abs(saldo).toFixed(2)}. Recomendo reduzir o valor médio das entradas (atualmente R$ ${mediaDepósito.toFixed(2)}) até recuperar o bankroll.`;
+    } else {
+        aiAdvice.innerText = "Análise: Gestão saudável. Saldo positivo mantido. Lembre-se de sacar uma porcentagem do lucro para garantir a meta mensal.";
+    }
 }
 
+// 3. Funções de Registro e Interface
 function finalizarRegistro(nomePlataforma) {
     if (!transacaoPendente) return;
 
@@ -67,25 +59,28 @@ function finalizarRegistro(nomePlataforma) {
 
     transacaoPendente = null;
     fecharModal();
-    atualizarDashboard();
-    renderizarHistorico();
+    atualizarTudo();
 }
 
-function atualizarDashboard() {
+function atualizarTudo() {
     const historico = JSON.parse(localStorage.getItem('historico_transacoes')) || [];
     let dep = 0, saq = 0;
+    
     historico.forEach(t => { t.tipo === "DEPÓSITO" ? dep += t.valor : saq += t.valor; });
-
     const saldo = saq - dep;
-    const balanceEl = document.getElementById('total-balance');
-    balanceEl.innerText = `R$ ${saldo.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-    balanceEl.style.color = saldo >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+
+    // UI Updates
+    const balEl = document.getElementById('total-balance');
+    balEl.innerText = `R$ ${saldo.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+    balEl.style.color = saldo >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
     document.getElementById('total-deposits').innerText = `R$ ${dep.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+
+    renderizarHistorico(historico);
+    executarIA(historico, saldo);
 }
 
-function renderizarHistorico() {
+function renderizarHistorico(historico) {
     const container = document.getElementById('transaction-list');
-    const historico = JSON.parse(localStorage.getItem('historico_transacoes')) || [];
     container.innerHTML = historico.map(t => `
         <div class="history-item">
             <div>
@@ -99,5 +94,26 @@ function renderizarHistorico() {
     `).join('');
 }
 
-function abrirModal() { document.getElementById('modalPlataformas').style.display = 'flex'; renderizarListaPlataformas(); }
+// Inicializadores
+document.getElementById('btnNovoRegistro').onclick = () => {
+    const v = prompt("Valor:");
+    if (!v) return;
+    const t = confirm("OK para DEPÓSITO, CANCELAR para SAQUE") ? "DEPÓSITO" : "SAQUE";
+    transacaoPendente = { valor: parseFloat(v.replace(',', '.')), tipo: t, data: new Date().toISOString() };
+    abrirModal();
+};
+
+function abrirModal() { document.getElementById('modalPlataformas').style.display = 'flex'; renderizarLista(); }
 function fecharModal() { document.getElementById('modalPlataformas').style.display = 'none'; }
+function renderizarLista() {
+    const cont = document.getElementById('listaPlataformas');
+    cont.innerHTML = "";
+    plataformas.sort((a,b)=>b.usos-a.usos).forEach(p => {
+        const d = document.createElement('div');
+        d.className = 'platform-item'; d.innerHTML = `${p.nome} <small>${p.usos}x</small>`;
+        d.onclick = () => finalizarRegistro(p.nome);
+        cont.appendChild(d);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', atualizarTudo);
